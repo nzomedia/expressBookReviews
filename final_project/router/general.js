@@ -1,5 +1,7 @@
 const express = require('express');
 let books = require("./booksdb.js");
+const { default: axios } = require('axios');
+const { SERVER_PORT } = require('../config/env.js');
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
@@ -84,4 +86,36 @@ public_users.get('/review/:isbn',function (req, res) {
   return res.send(JSON.stringify(book.reviews, null, 4));
 });
 
+
+
+
+async function getBooks(){
+  const resp = await axios.get('http://localhost:' + SERVER_PORT);
+
+  return resp.data;
+}
+
+async function getBookDetailsByIsbn(isbn){
+  const resp = await axios.get('http://localhost:' + SERVER_PORT + '/isbn/' + isbn);
+
+  return resp.data;
+}
+
+async function getBookDetailsByAuthor(authorName){
+  const resp = await axios.get('http://localhost:' + SERVER_PORT + '/author/' + authorName);
+
+  return resp.data;
+}
+
+async function getBookDetailsByTitle(title){
+  const resp = await axios.get('http://localhost:' + SERVER_PORT + '/title/' + title);
+
+  return resp.data;
+}
+
+
 module.exports.general = public_users;
+module.exports.getBooksAsync = getBooks;
+module.exports.getBookDetailsByIsbnAsync = getBookDetailsByIsbn;
+module.exports.getBookDetailsByAuthorAsync = getBookDetailsByAuthor;
+module.exports.getBookDetailsByTitleAsync = getBookDetailsByTitle;

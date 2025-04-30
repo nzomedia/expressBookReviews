@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const session = require('express-session');
 const { JWT_SECRET } = require('./config/credentials.js');
+const { SERVER_PORT } = require('./config/env.js');
 const customer_routes = require('./router/auth_users.js').authenticated;
 const genl_routes = require('./router/general.js').general;
 
@@ -24,9 +25,9 @@ app.use("/customer/auth/*", function auth(req,res,next){
     next();
 });
  
-const PORT = 3000;
+const PORT = SERVER_PORT;
 
 app.use("/customer", customer_routes);
 app.use("/", genl_routes);
 
-app.listen(PORT,()=>console.log("Server is running"));
+app.listen(PORT,()=>console.log("Server is running on port " + PORT));
