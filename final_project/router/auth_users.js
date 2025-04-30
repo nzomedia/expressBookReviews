@@ -35,7 +35,7 @@ regd_users.post("/login", (req,res) => {
 
   req.session.auth = jwt.sign({
     username
-  }, JWT_SECRET);
+  }, JWT_SECRET, {expiresIn: 60 * 10});
   
   return res.send(JSON.stringify({message: 'Authenticated successfully.'}, null, 4));
 });
